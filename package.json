@@ -1,0 +1,31 @@
+{
+  "name": "blueteamgame",
+  "version": "1.0.0",
+  "description": "Guess the drawing style game. Drawer will be chosen at random to draw on canvas. Others in lobby will guess the drawing.\r ## About Us\r Zachary, Claude, Cedael, Matt",
+  "main": "index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-session": "^1.4.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "passport": "^0.4.1",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmphil/blueTeamGame.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmphil/blueTeamGame/issues"
+  },
+  "homepage": "https://github.com/jmphil/blueTeamGame#readme"
+}
