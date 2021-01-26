@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 node_modules
 .DS_Store
 .config.json
 .config.js
 .package-lock.json
 .package.json
+=======
+node_modules
+.DS_Store
+config.json
+config.js
+>>>>>>> main
