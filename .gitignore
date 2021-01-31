@@ -1,12 +1,6 @@
 node_modules
 .DS_Store
-<<<<<<< HEAD
 .config.json
 .config.js
 .package-lock.json
 .package.json
-=======
-config.json
-config.js
-setup.bash
->>>>>>> c8c3dfa2c4799ef902a163ccad47b716247eb3d0
