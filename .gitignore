@@ -1,5 +1,6 @@
 node_modules
 .DS_Store
-config.json
-config.js
-setup.bash
+.config.json
+.config.js
+.package-lock.json
+.package.json
