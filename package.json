@@ -1,28 +1,8 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-session": "^1.4.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "helmet": "^4.4.1",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^6.4.0"
-  },
-  "name": "blueteamgame",
-  "description": "Guess the drawing style game. Drawer will be chosen at random to draw on canvas. Others in lobby will guess the drawing.\r ## About Us\r Zachary, Claude, Cedael, Matt",
-  "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
-=======
   "name": "blueteamgame",
   "version": "1.0.0",
   "description": "Guess the drawing style game. Users will  ## About Us Zachary Claude Cedael Matt",
   "main": "config.js",
->>>>>>> main
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,9 +15,6 @@
   "bugs": {
     "url": "https://github.com/jmphil/blueTeamGame/issues"
   },
-<<<<<<< HEAD
-  "homepage": "https://github.com/jmphil/blueTeamGame#readme"
-=======
   "homepage": "https://github.com/jmphil/blueTeamGame#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -51,5 +28,4 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.4.0"
   }
->>>>>>> main
 }
