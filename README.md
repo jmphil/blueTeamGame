@@ -1,8 +1,10 @@
+
 # Doodlenary
 
-> Guess the drawing style game. Users will  ## About Us Zachary Claude Cedael Matt
+> Guess the drawing style game. Users will  
 
-background details relevant to understanding what this module does
+## About Us Zachary Claude Cedael Matt
+
 
 ## Usage
 
@@ -46,4 +48,5 @@ blueteamgame was inspired by..
 ## License
 
 ISC
+
 
