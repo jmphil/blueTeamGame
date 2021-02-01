@@ -6,10 +6,9 @@ router.get("/", (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    //session is cleared
-    req.logout();  //on the req object by passport
-  
+  //session is cleared
+    req.logout();  
     res.redirect('/')
-  })
+})
 
 module.exports = router;
