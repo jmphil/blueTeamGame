@@ -24,6 +24,13 @@ module.exports = {
           key:'id'
         }
       },
+      // userID: {
+      //   type: Sequelize.INTEGER,
+      //   references:{
+      //     model:'points',
+      //     key:'id'
+      //   }
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
