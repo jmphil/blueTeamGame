@@ -28,8 +28,8 @@ router.post("/registration", async (req, res) => {
   // insert user in db
   let insert = await db.users.create({
     username: username,
-    email: email,
     password: passwordEncrypted,
+    email: email,
     roleID: 1
   })
   res.redirect('/login')
