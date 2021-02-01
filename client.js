@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#usernameModal').on('hide.bs.modal', function (e) {
         if (!/^[a-zA-Z0-9]+$/.test($('#usernameInput').val())) {
             e.preventDefault();
-            alert("Bitte gültigen Benutzernamen eingeben!");
+            alert("Please enter a valid username!");
         } else {
             setUsername();
         }
@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on('login', (data) => {
         connected = true;
         // Display the welcome message
-        var message = "Welcome to MalMal!";
+        var message = "Welcome to Game!";
         log(message, {
             prepend: true
         });
