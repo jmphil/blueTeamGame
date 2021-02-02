@@ -27,3 +27,44 @@ body{
         <div class="col-md-4">
             <ul class="scrollbar scrollbar-primary" id="messages"></ul>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="colors">
+                        <div class="color black"></div>
+                        <div class="color red"></div>
+                        <div class="color green"></div>
+                        <div class="color blue"></div>
+                        <div class="color yellow"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="gameTimer" readonly>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="instructionBox" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Your message" id="inputMessage">
+        </div>
+    </div>
+</div>
+<!--site content end-->
+
+<footer class="footer">
+    <div class="container-fluid">
+        <span class="text-muted"></span>
+    </div>
+</footer>
+<script>
+    // Modal popup for username input
+    $(document).ready(function () {
+        $('#usernameModal').modal('show');
+    });
+</script>
+</body>
+</html>
