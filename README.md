@@ -1,6 +1,6 @@
-# Doodlenary
 
-![logo](https://github.com/jmphil/blueTeamGame/tree/main/public/images/doodlenary1.png)
+
+<img src="public/images/doodlenary1.png">
 
 <h2><u>Overview:</u><h2>
 <h4>Doodlenary is a guess the drawing style game. An "artist" will be chosen at random to pick a word and draw on the canvas. Other players in the lobby will attempt to guess what the artist is drawing. Points will be awarded depending on how quickly players can guess what the artist is drawing.</h4>
