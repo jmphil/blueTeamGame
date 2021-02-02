@@ -22,20 +22,20 @@ router.post("/registration", async (req, res) => {
   // encrypt password
   try {
 
-  // encrypt password
-  let passwordEncrypted = bcrypt.hashSync(password,8);
+    // encrypt password
+    let passwordEncrypted = bcrypt.hashSync(password,8);
 
-  // insert user in db
-  let insert = await db.users.create({
-    username: username,
-    password: passwordEncrypted,
-    email: email,
-    roleID: 1
-  })
-  res.redirect('/login')
+    // insert user in db
+    let insert = await db.users.create({
+      username: username,
+      password: passwordEncrypted,
+      email: email,
+      roleID: 2
+    })
+    res.redirect('/login')
   }
   catch (error){
-    res.send(`error: can't register this username`);
+    res.send(error);
   }
 });
 

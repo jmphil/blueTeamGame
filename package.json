@@ -1,5 +1,4 @@
 {
-
   "name": "blueteamgame",
   "version": "1.0.0",
   "description": "Guess the drawing style game. Users will  ## About Us Zachary Claude Cedael Matt",
@@ -16,7 +15,6 @@
   "bugs": {
     "url": "https://github.com/jmphil/blueTeamGame/issues"
   },
-
   "homepage": "https://github.com/jmphil/blueTeamGame#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -31,5 +29,4 @@
     "sequelize": "^6.4.0",
     "socket.io": "^3.1.0"
   }
-
 }
