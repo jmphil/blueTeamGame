@@ -96,77 +96,77 @@ Other:
 
 ### Adds the visual chat message to the message list</h4>
 ``` javascript
-    // Adds the visual chat message to the message list
-    const addChatMessage = (data, options) => {
-        // Don't fade the message in if there is an 'X was typing'
-        var $typingMessages = getTypingMessages(data);
-        options = options || {};
-        if ($typingMessages.length !== 0) {
-            options.fade = false;
-            $typingMessages.remove();
-        }
-
-        var formattedUsername;
-        if (options.typingMessage) {
-            formattedUsername = data.username + ' ';
-        } else {
-            formattedUsername = data.username + ': ';
-        }
-
-        var $usernameDiv = $('<span class="username"/>')
-            .text(formattedUsername)
-            .css('color', getUsernameColor(data.username));
-
-        var $messageBodyDiv = $('<span class="messageBody">')
-            .text(data.message);
-
-        var typingClass = data.typing ? 'typing' : '';
-        var $messageDiv = $('<li class="message"/>')
-            .data('username', data.username)
-            .addClass(typingClass)
-            .append($usernameDiv, $messageBodyDiv);
-
-        addMessageElement($messageDiv, options);
+// Adds the visual chat message to the message list
+const addChatMessage = (data, options) => {
+    // Don't fade the message in if there is an 'X was typing'
+    var $typingMessages = getTypingMessages(data);
+    options = options || {};
+    if ($typingMessages.length !== 0) {
+        options.fade = false;
+        $typingMessages.remove();
     }
+
+    var formattedUsername;
+    if (options.typingMessage) {
+        formattedUsername = data.username + ' ';
+    } else {
+        formattedUsername = data.username + ': ';
+    }
+
+    var $usernameDiv = $('<span class="username"/>')
+        .text(formattedUsername)
+        .css('color', getUsernameColor(data.username));
+
+    var $messageBodyDiv = $('<span class="messageBody">')
+        .text(data.message);
+
+    var typingClass = data.typing ? 'typing' : '';
+    var $messageDiv = $('<li class="message"/>')
+        .data('username', data.username)
+        .addClass(typingClass)
+        .append($usernameDiv, $messageBodyDiv);
+
+    addMessageElement($messageDiv, options);
+}
 ``` 
 ### Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word</h4>
  ``` javascript  
-    //Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word
-    function stopGameEngine(correctGuessPlayer) {
-     logMessage("Game Stopped.");
-        if (correctGuessPlayer != null) {
-            // Somebody guessed the word (correctGuessPlayer != null)
-         var points = timeRemaining; // Points are the time remaining on the round timer
-            playerQueue.forEach(function (element) {
-                element.emit('chat_instruction', "Round over! " + drawingPlayer.username + " earned " + points + " points.");
-                 element.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
-                 "and earned " + points + " points.");
-        });
-        drawingPlayer.emit('chat_instruction', "Round over! You've earned " + points + " points.");
-        drawingPlayer.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
-            "and earned " + points + " points.");
-
-        // Point rollout and highscores
-        if (highscores.hasOwnProperty(correctGuessPlayer.username)) {
-            highscores[correctGuessPlayer.username] = highscores[correctGuessPlayer.username] + points;
-        } else {
-            highscores[correctGuessPlayer.username] = points;
-        }
-
-        if (highscores.hasOwnProperty(drawingPlayer.username)) {
-            highscores[drawingPlayer.username] = highscores[drawingPlayer.username] + points;
-        } else {
-            highscores[drawingPlayer.username] = points;
-        }
-    } else {
-        // No one guessed the word (correctGuessPlayer == null)
+//Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word
+function stopGameEngine(correctGuessPlayer) {
+ logMessage("Game Stopped.");
+    if (correctGuessPlayer != null) {
+        // Somebody guessed the word (correctGuessPlayer != null)
+     var points = timeRemaining; // Points are the time remaining on the round timer
         playerQueue.forEach(function (element) {
-            element.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
-        });
-        if (drawingPlayer != null) {
-            drawingPlayer.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
-        }
+            element.emit('chat_instruction', "Round over! " + drawingPlayer.username + " earned " + points + " points.");
+             element.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
+             "and earned " + points + " points.");
+    });
+    drawingPlayer.emit('chat_instruction', "Round over! You've earned " + points + " points.");
+    drawingPlayer.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
+        "and earned " + points + " points.");
+
+    // Point rollout and highscores
+    if (highscores.hasOwnProperty(correctGuessPlayer.username)) {
+        highscores[correctGuessPlayer.username] = highscores[correctGuessPlayer.username] + points;
+    } else {
+        highscores[correctGuessPlayer.username] = points;
     }
+
+    if (highscores.hasOwnProperty(drawingPlayer.username)) {
+        highscores[drawingPlayer.username] = highscores[drawingPlayer.username] + points;
+    } else {
+        highscores[drawingPlayer.username] = points;
+    }
+} else {
+    // No one guessed the word (correctGuessPlayer == null)
+    playerQueue.forEach(function (element) {
+        element.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
+    });
+    if (drawingPlayer != null) {
+        drawingPlayer.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
+    }
+}
 ```
 
 ## Acknowledgments
