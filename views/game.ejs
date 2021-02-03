@@ -11,7 +11,7 @@
     <script src="client.js"></script>
 <style>
 body{
-    background-image: url('./public/images/doodle2.jpg');
+    background-image: url('images/doodle2.jpg');
     background-size: cover;
 }
 .color{
@@ -83,6 +83,10 @@ body{
         </div>
     </div>
 </div>
+<div>
+    <% pointLeaders.forEach(el => { %>
+     <%= el['user.username'] %> =  <%= el.points %> 
+    <% }) %>
 <!--site content end-->
 
 <footer class="footer">
