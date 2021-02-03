@@ -1,24 +1,54 @@
-.image-container {
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    margin-left: auto;
-    margin-right: auto;
+/* body {
+    background-image: url('../images/wp2587167.jpg');
+    background-size: cover;
+    background-repeat: no-repeat; */
+    /* opacity: 0.2; */
+    
+/* }; */
+
+.parallax {
+    /* The image used */
+    background-image: url("../images/wp2587167.jpg");
+  
+    /* Set a specific height */
+    min-height: 500px; 
+  
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+/* .center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    } */
     
 
-  };
-  
 .doodleImg {
     
-    display: block;
+    width: 500px;
+    height: 500px;
+    /* display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
-   
+    width: 50%; */
+    
 };
 
-.imgButton{
-
+a {
+    
+    color: white;
+    font-family: 'Coming Soon', cursive;
 
 };
+
+@-webkit-keyframes fontfix {
+    from { opacity: 1; }
+    to   { opacity: 1; }
+}
+
+
+
