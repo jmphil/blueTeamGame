@@ -94,8 +94,8 @@ Other:
 
 <h2><u>Code Snippets:</u></h2>
 
-<h4> Adds the visual chat message to the message list</h4>
-
+### Adds the visual chat message to the message list</h4>
+``` javascript
     // Adds the visual chat message to the message list
     const addChatMessage = (data, options) => {
         // Don't fade the message in if there is an 'X was typing'
@@ -128,9 +128,9 @@ Other:
 
         addMessageElement($messageDiv, options);
     }
- 
- <h4>Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word</h4>
-   
+``` 
+### Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word</h4>
+ ``` javascript  
     //Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word
     function stopGameEngine(correctGuessPlayer) {
      logMessage("Game Stopped.");
@@ -167,6 +167,7 @@ Other:
             drawingPlayer.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
         }
     }
+```
 
 ## Acknowledgments
 
