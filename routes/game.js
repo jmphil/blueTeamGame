@@ -4,7 +4,7 @@ const db = require('../models');
 
 router.get('/game', async (req, res) => {
     let pointLeaders = await db.points.findAll({raw: true, include: db.users,limit: 10})
-    res.render("/game",{
+    res.render('game',{
       pointLeaders
     });
   });
