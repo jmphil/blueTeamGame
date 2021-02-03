@@ -4,17 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="css/index.css">
-</head>
-<body>
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+  <!-- <link href="fonts.googleapis.com/css2?family=Coming+Soon&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/index.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap');
+    .doodleTxt {
+    
+    font-size: 20px;
+    color: aquamarine;
+    font-family: 'Coming Soon', cursive;
+
+    };
+
+  </style>
   
-    <div class="imgage-container">
-      <img class="doodleimg" src="/images/doodlenary2.png.png" />
+</head>
+<body class="parallax ">
+  
+   
+    <center><img class="doodleImg" src="/images/doodlenary2.png.png" /></center>
+    <center>
+    <div class="row doodleTxt">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" class="doodleTxt">Doodlenary is a guess the drawing style game. An "artist" will be chosen at random to pick a word and draw on the canvas. Other players in the lobby will attempt to guess what the artist is drawing. Points will be awarded depending on how quickly players can guess what the artist is drawing.</div>
+      <div class="col-md-4"></div>
     </div>
-    <div class="imgButton">
-      <button value="Login" href="#">Login</button>
-      <button value="Registration" href="#">Registration</button>
+
+    <br>
+
+    <div class="container">
+      <div class="col-md-4 justify-content: right">
+        <button type="button" class="btn btn-primary btn-lg" href="http://localhost:3000/registration">Register</button> 
+      </div>
+      <div class="col-md-4">
+        <a class="doodleTxt">or</a>
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-success btn-lg" href="http://localhost:3000/login">Login</button>
+      </div>
     </div>
+  </center>
+    <br>
+    <br>
+    <!-- <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" id="doodleTxt">Doodlenary is a guess the drawing style game. An "artist" will be chosen at random to pick a word and draw on the canvas. Other players in the lobby will attempt to guess what the artist is drawing. Points will be awarded depending on how quickly players can guess what the artist is drawing.</div>
+      <div class="col-md-4"></div>
+    </div> -->
+    
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Bootstrap JS -->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     
 </body>
 </html>
