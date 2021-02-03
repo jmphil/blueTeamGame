@@ -9,44 +9,56 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
   <link rel="stylesheet" href="/css/index.css">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap');
-    .doodleTxt {
-    
-    font-size: 20px;
-    color: aquamarine;
-    font-family: 'Coming Soon', cursive;
 
-    };
+  .doodleTxt {
+  
+  font-size: 20px;
+  color: aquamarine;
+  font-family: 'Coming Soon', cursive;
+  
 
+  };
   </style>
-  
+
 </head>
-<body class="parallax ">
+<body class="parallax">
   
-   
-    <center><img class="doodleImg" src="/images/doodlenary2.png.png" /></center>
-    <center>
-    <div class="row doodleTxt" position="absolute">
+  <div class="container">
+    <div class="row">
       <div class="col-md-4"></div>
-      <div class="col-md-4" class="doodleTxt">Doodlenary is a guess the drawing style game. An "artist" will be chosen at random to pick a word and draw on the canvas. Other players in the lobby will attempt to guess what the artist is drawing. Points will be awarded depending on how quickly players can guess what the artist is drawing.</div>
+      <div class="col-md-4 justify-content-center"><img src="/images/doodlenary2.png.png" class="img-fluid" alt=""></div>
       <div class="col-md-4"></div>
     </div>
+  </div>
+
+  <div>
+    <div class="row" >
+      <div class="col-md-4"></div>
+      <div class=" col-md-4 doodleTxt"  >Doodlenary is a guess the drawing style game. An "artist" will be chosen at random to pick a word and draw on the canvas. Other players in the lobby will attempt to guess what the artist is drawing. Points will be awarded depending on how quickly players can guess what the artist is drawing.</div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
 
     <br>
-
-    <div class="container" position="absolute">
-      <div class="col-md-4 justify-content: right">
-        <button type="button" class="btn btn-primary btn-lg" href="/registration">Register</button> 
+    <br>
+      
+  <div class="container-fluid doodleTxt">
+    <div class="row justify-content-center">
+      <div class="col col-sm-auto float-right ">
+        <a href="/login" class="btn btn-primary btn-lg active doodleTxt pull-rigth" role="button" aria-pressed="true">Login</a>
       </div>
-      <div class="col-md-4">
-        <a class="doodleTxt">or</a>
+      <div class="col-sm-auto" class="">
+        <p class="">or</p>
       </div>
-      <div class="col-md-4">
-        <button type="button" class="btn btn-success btn-lg" href="/login">Login</button>
+      <div class="col col-sm-auto">
+        <a href="/registration" class="btn btn-primary btn-lg active doodleTxt" role="button" aria-pressed="true">Register</a>
       </div>
     </div>
-  </center>
+  </div>
+  
     <br>
     <br>
     <!-- <div class="row">
