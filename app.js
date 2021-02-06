@@ -52,307 +52,100 @@ io.on('connection' , (socket) => {
 })
 
 // Requiring JSONs
+var users = [];
 var words = require('./resources/words');
+var wordcount;
 
-//Game Variables
-const ROUNDTIME = 60; // 60 seconds per round
-var playerQueue = []; // Player
-var canvasData = []; // Canvas content
-var regXp;  // Regular Expression for guess word
-var randomWord; // Choosen word
-var roundTimer; // Round Timer
-var timeRemaining; // Remaining time in round
-var currentPublicInstruction = ""; // Public instruction for players (except drawer)
-var gameRunning = false; // Is the game currently running?
-var drawingPlayer; // The currently drawing player
+// Setup new word function that takes a random postion in the word array
+function newWord() {
+	wordcount = Math.floor(Math.random() * (words.length));
+	return words[wordcount];
+};
 
-// Try to start a new round (only if players >= 2)
-function startGameEngine() {
-    logMessage("Trying to start Engine.");
-    if (numUsers >= 2 && !gameRunning) {
-        logMessage("Engine started.");
-        gameRunning = true;
-        drawingPlayer = playerQueue.shift();
-        logMessage("Drawing Player: " + drawingPlayer.username);
+// Setup connection event in the io object and send userlist
+io.on('connection', function (socket) {
+	io.emit('userlist', users);
 
-        var randomWordsArray = Object.values(words);    //Getting words array
-        randomWord = randomWordsArray[Math.floor(Math.random() * randomWordsArray.length)];  //Choosing random word
+	// Setup join event on the socket, passing the username to the users table and logging the info
+	socket.on('join', function(name) {
+		socket.username = name;
+		socket.join(name);
+		console.log(socket.username + ' has joined. ID: ' + socket.id);
+		users.push(socket.username);
 
-        //Create RegExp for finding the word in the chat
-        regXp = new RegExp("\\b" + randomWord + "\\b", "i"); //search for standalone word, case-insensitive
+		// Put user in drawer or guesser room depending on other active users
+		if(users.length == 1 || typeof io.sockets.adapter.rooms['drawer'] === 'undefined') {
+			socket.join('drawer');
+			io.in(socket.username).emit('drawer', socket.username);
+			console.log(socket.username + ' is a drawer');
+			io.in(socket.username).emit('draw word', newWord());
+		}else{
+			socket.join('guesser');
+			io.in(socket.username).emit('guesser', socket.username);
+			console.log(socket.username + ' is a guesser');
+		}
+	
+		io.emit('userlist', users);
+	});
 
-        logMessage("Random word chosen: " + randomWord);
+	// Draw event through the socket
+	socket.on('draw', function(obj) {
+		socket.broadcast.emit('draw', obj);
+	});
 
-        //Getting the word to the Drawer and unlocking canvas
-        drawingPlayer.emit('canvas_unlock', true);
-        currentPublicInstruction = "Guess the word!";
-        drawingPlayer.emit('instruction_box', "Draw the word: " + randomWord);
-        playerQueue.forEach(function (element) {
-            element.emit('instruction_box', currentPublicInstruction);
-        });
-        initializeCountdown();
-    } else {
-        logMessage("Not enough Players or game already running!");
-    }
-}
+	// Guess event through the socket
+	socket.on('guessword', function(data) {
+		io.emit('guessword', { username: data.username, guessword: data.guessword})
+		console.log('guessword event triggered on server from: ' + data.username + ' with word: ' + data.guessword);
+	});
 
-// Round timer handling, if the rimer runs out stopGameEngine is called with null (no one guessed correctly)
-function initializeCountdown() {
-    timeRemaining = ROUNDTIME;
-    roundTimer = setInterval(function () {
-        timeRemaining -= 1;
-        if (gameRunning) {
-            if (timeRemaining < -1) {
-                clearInterval(roundTimer);
-                stopGameEngine();
-            } else {
-                playerQueue.forEach(function (element) {
-                    element.emit('timer', timeRemaining);
-                });
-                drawingPlayer.emit('timer', timeRemaining);
-                logMessage("Countdown: " + timeRemaining);
-            }
-        } else {
-            clearInterval(roundTimer);
-        }
-    }, 1000);
-}
+	// Disconnect behavior
+	socket.on('disconnect', function() {
+		for (var i = 0; i < users.length; i++) {
+			if(users[i] == socket.username) {
+				users.splice(i, 1);
+			};
+		};
+		
+		console.log(socket.username + ' has disconnected.');
+		io.emit('userlist', users);
 
-// Stop the current game, correctGuessPlayer = player that guessed the word. If correctGuessPlayer == null, nobody guessed the word
-function stopGameEngine(correctGuessPlayer) {
-    logMessage("Game Stopped.");
-    if (correctGuessPlayer != null) {
-        // Somebody guessed the word (correctGuessPlayer != null)
-        var points = timeRemaining; // Points are the time remaining on the round timer
-        playerQueue.forEach(function (element) {
-            element.emit('chat_instruction', "Round over! " + drawingPlayer.username + " earned " + points + " points.");
-            element.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
-                "and earned " + points + " points.");
-        });
-        drawingPlayer.emit('chat_instruction', "Round over! You've earned " + points + " points.");
-        drawingPlayer.emit('chat_instruction', correctGuessPlayer.username + " Guessed the word: " + randomWord + " correctly\n" +
-            "and earned " + points + " points.");
+		// Make new drawer if the drawer disconnects
+		if(typeof io.sockets.adapter.rooms['drawer'] === "undefined") {
+			var x = Math.floor(Math.random() * (users.length));
+			console.log(users[x]);
+			io.in(users[x]).emit('new drawer', users[x]);
+		};
+	});
 
-        // Point rollout and highscores
-        if (highscores.hasOwnProperty(correctGuessPlayer.username)) {
-            highscores[correctGuessPlayer.username] = highscores[correctGuessPlayer.username] + points;
-        } else {
-            highscores[correctGuessPlayer.username] = points;
-        }
+	// New drawer behavior
+	socket.on('new drawer', function(name) {
+		socket.leave('guesser');
+		socket.join('drawer');
+		console.log('new drawer emit: ' + name);
+		socket.emit('drawer', name);	
+		io.in('drawer').emit('draw word', newWord());
+	});
 
-        if (highscores.hasOwnProperty(drawingPlayer.username)) {
-            highscores[drawingPlayer.username] = highscores[drawingPlayer.username] + points;
-        } else {
-            highscores[drawingPlayer.username] = points;
-        }
-    } else {
-        // No one guessed the word (correctGuessPlayer == null)
-        playerQueue.forEach(function (element) {
-            element.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
-        });
-        if (drawingPlayer != null) {
-            drawingPlayer.emit('chat_instruction', "No one guessed the word " + randomWord + " Nobody earns points.");
-        }
-    }
+	// Swap rooms ability (force new drawer with doubleclick)
+	socket.on('swap rooms', function(data) {
+		socket.leave('drawer');
+		socket.join('guesser');
+		socket.emit('guesser', socket.username);
+		io.in(data.to).emit('drawer', data.to);
+		io.in(data.to).emit('draw word', newWord());
+		io.emit('reset', data.to);
+	});
 
-    // Put the drawing player back in the player queue (if he's not disconnected yet)
-    if (drawingPlayer != null) {
-        playerQueue.push(drawingPlayer);
-    }
-    drawingPlayer = null;
-    gameRunning = false;
-    clearInterval(roundTimer);
-    canvasData = []; // Empty canvas data
+	// Correct answer behavior
+	socket.on('correct answer', function(data) {
+		io.emit('correct answer', data);
+		console.log(data.username + ' guessed correctly with ' + data.guessword);
+	});
 
-    // Resetting Instruction box, timer and locking and clearing canvas
-    currentPublicInstruction = "Round over.";
-    playerQueue.forEach(function (element) {
-        element.emit('instruction_box', currentPublicInstruction);
-        element.emit('timer', -1);
-        element.emit('canvas_unlock', false);
-        element.emit('canvas_clear');
-    });
+	// Clear screen behavior
+	socket.on('clear screen', function(name) {
+		io.emit('clear screen', name);
+	});
 
-    // Start new game if there is enough players
-    if (numUsers >= 2) {
-        startGameEngine();
-    }
-}
-// RegEx test on chat messages, stopping game if word is found
-function checkWord(player, data) {
-    if (regXp.test(data) && !(player === drawingPlayer)) {
-        stopGameEngine(player);
-    }
-}
-
-// Sending canvas data to clients that request it or are given it (eg. on resize or newly connected)
-function sendCanvasData(socket) {
-    canvasData.forEach(function (data) {
-        socket.emit('drawing', data)
-    });
-}
-
-// GETs words
-app.get('/words', (req, res) => {
-    res.status(200).json(words);
-});
-
-// PUTs add-word (to add words to list, why not "put" on "words"?!)
-app.put('/add-word', (req, res) => {
-    const wordArray = req.body;
-
-    // Check if data is an array
-    if (!Array.isArray(wordArray)) {
-        res.status(400).json({message: 'Data must be a JSON array'});
-        return;
-    }
-
-    for (let newWord in wordArray) {
-        // Check if data is in String format
-        if (typeof wordArray[newWord] !== 'string') {
-            res.status(400).json({message: 'Data in array must be Strings'});
-            return;
-        }
-
-        let isDuplicate = false;
-
-        // Check if word already exists
-        for (let existingWord in words) {
-            if (words[existingWord] === wordArray[newWord]) {
-                isDuplicate = true;
-                logMessage(wordArray[newWord] + " is duplicate.");
-            }
-        }
-
-
-        // If not a duplicate, add it to the array
-        if (isDuplicate) {
-            logMessage(wordArray[newWord] + ' is a duplicate or has whitespaces.');
-        }
-
-        else {
-            words.push(wordArray[newWord]);
-            logMessage("Added Word: " + wordArray[newWord]);
-        }
-    }
-
-    // Writing words to JSON file
-    fs.writeFileSync('./resources/words.json', JSON.stringify(words), function (err) {
-        if (err) throw err;
-    });
-
-    res.status(200).json({message: 'Data has been successfully added'})
-});
-
-// ---START OF SOCKET IMPLEMENTATION---
-io.on('connection', (socket) => {
-    var addedUser = false;
-
-    // Player is drawing
-    socket.on('drawing', (data) => {
-        canvasData.push(data);
-        socket.broadcast.emit('drawing', data)
-    });
-
-    // When the client emits 'new message', this listens and executes
-    socket.on('new_message', (data) => {
-
-        // we tell the client to execute 'new message'
-        socket.broadcast.emit('new_message', {
-            username: socket.username,
-            message: data
-        });
-
-        //Check chat for correct word
-        if (gameRunning) {
-            checkWord(socket, data);
-        }
-    });
-
-    // When the client emits 'add user', this listens and executes
-    socket.on('add_user', (username) => {
-        if (addedUser) return;
-
-        // we store the username in the socket session for this client
-        socket.username = username;
-
-        //Push User to User Queue
-        playerQueue.push(socket);
-
-        // Log player queue to console
-        if (DEBUG) {
-            logMessage("Added to Queue: " + socket.username);
-            playerQueue.forEach(function (element) {
-                logMessage(element.username);
-            });
-        }
-
-        ++numUsers;
-        addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
-        });
-        // Echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user_joined', {
-            username: socket.username,
-            numUsers: numUsers
-        });
-
-        startGameEngine(); // Try to start game
-
-        // Send canvas conent to newly connected players (important if game is already running)
-        sendCanvasData(socket);
-        // Send public instruction to newly connected (important if game is already running)
-        socket.emit('instruction_box', currentPublicInstruction);
-    });
-
-    // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', () => {
-        socket.broadcast.emit('typing', {
-            username: socket.username
-        });
-    });
-
-    // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop_typing', () => {
-        socket.broadcast.emit('stop_typing', {
-            username: socket.username
-        });
-    });
-
-    // request canvas data
-    socket.on('get_canvas', () => {
-        sendCanvasData(socket);
-    });
-
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', () => {
-        if (addedUser) {
-            --numUsers;
-            //Remove User from queue and stop if its the drawer
-            if (socket === drawingPlayer) {
-                logMessage("Drawer disconnected!");
-                playerQueue.forEach(function (element) {
-                    element.emit('chat_instruction', "The drawer disconnected.");
-                });
-                drawingPlayer = null;
-                stopGameEngine();
-            } else {
-                playerQueue.splice(playerQueue.indexOf(socket), 1);
-                if (DEBUG) {
-                    logMessage("Removed from Queue: " + socket.username);
-                    playerQueue.forEach(function (element) {
-                        logMessage(element.username);
-                    });
-                }
-            }
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers: numUsers
-            });
-        }
-    });
-});
+})
